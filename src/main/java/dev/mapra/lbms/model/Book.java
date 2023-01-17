@@ -19,6 +19,7 @@ import java.util.List;
  *  - the publisher, mapped to publisher entity
  *      considering each book is published by only one
  *      publisher
+ *  - admin who added the book
  *
  * @author mohammadhoseinaref
  * @version 0.1
@@ -43,4 +44,6 @@ public class Book {
     List<Writer> writers; // a list of book's writers, mapped to writer entity
     @OneToOne
     Publisher publisher; // the publisher of book, mapped to publisher entity
+    @ManyToOne
+    Admin admin; // the admin who added this book
 }

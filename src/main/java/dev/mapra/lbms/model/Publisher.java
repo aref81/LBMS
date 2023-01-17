@@ -15,6 +15,7 @@ import java.util.List;
  *  - a list of books published by this publisher, mapped to book entity
  *    considering each publisher can publish multiple books but each book
  *    can only be published by one publisher
+ *  - admin who added the publisher
  *
  * @author mohammadhoseinaref
  * @version 0.1
@@ -34,4 +35,6 @@ public class Publisher {
     private String foundYear; // publisher's year of foundation, not necessary
     @OneToMany
     List<Book> books; // a list of books published by this publisher, mapped to book entity
+    @ManyToOne
+    Admin admin; // the admin who added this publisher
 }

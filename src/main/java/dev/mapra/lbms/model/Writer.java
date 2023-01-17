@@ -15,6 +15,7 @@ import java.util.List;
  *  - a list of books written by this writer, mapped to book entity,
  *      considering each writer can write multiple books and each book
  *      can be written by multiple writers
+ *  - admin who added the writer
  *
  * @author mohammadhoseinaref
  * @version 0.1
@@ -36,4 +37,6 @@ public class Writer {
     private LocalDateTime birth; // writer's date of birth, not necessary
     @ManyToMany
     private List<Book> books; // list of books written by this writer, mapped to book entity
+    @ManyToOne
+    Admin admin; // the admin who added this writer
 }
