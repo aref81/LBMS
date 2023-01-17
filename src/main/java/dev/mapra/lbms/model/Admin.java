@@ -11,7 +11,7 @@ import java.util.List;
  *                                      adds books/publishers/writers
  *                                      have access to list of its books/publishers/writers
  *                                      users can be authenticated as one with a username and password
- *
+ * <p>
  * keeps :
  *  //- id (auto generated)//
  *  - user name (also acts as primary key in the Admins Table)
@@ -19,12 +19,14 @@ import java.util.List;
  *  - a list of added book
  *  - a list of added publishers
  *  - a list of added writers
- *
+ * <p>
  *  books - publishers - writers should be consistent with each other
  *  developed with the idea that each admin has a different set of books - publishers - writers
  * @author mohammadhoseinaref
  * @version 0.1
- * @see Book,Publisher,Writer
+ * @see Book
+ * @see Writer
+ * @see Publisher
  */
 
 @Data

@@ -22,7 +22,8 @@ import java.util.List;
  *
  * @author mohammadhoseinaref
  * @version 0.1
- * @see Publisher,Writer
+ * @see Publisher
+ * @see Writer
  */
 @Data
 @Entity
