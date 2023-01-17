@@ -33,11 +33,10 @@ import java.util.List;
 @Entity
 @Table(name = "Admins")
 public class Admin {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "id", nullable = false)
-//    private Long id;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
     @Column(name = "userName",nullable = false,unique = true)
     private String userName;
     @Column(name = "password",nullable = false)
@@ -48,44 +47,4 @@ public class Admin {
     List<Publisher> publishers;
     @OneToMany
     List<Writer> writers;
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
-
-    public List<Publisher> getPublishers() {
-        return publishers;
-    }
-
-    public void setPublishers(List<Publisher> publishers) {
-        this.publishers = publishers;
-    }
-
-    public List<Writer> getWriters() {
-        return writers;
-    }
-
-    public void setWriters(List<Writer> writers) {
-        this.writers = writers;
-    }
 }

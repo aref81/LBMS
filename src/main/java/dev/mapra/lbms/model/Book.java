@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Represents a Book -> entity is published by a publisher and written
  *                      by one or more writer
- *
+ * <p>
  * keeps :
  *  - id (auto generated)
  *  - book's name
@@ -43,52 +43,4 @@ public class Book {
     List<Writer> writers; // a list of book's writers, mapped to writer entity
     @OneToOne
     Publisher publisher; // the publisher of book, mapped to publisher entity
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPublishYear() {
-        return publishYear;
-    }
-
-    public void setPublishYear(String publishYear) {
-        this.publishYear = publishYear;
-    }
-
-    public Long getAvailableCount() {
-        return availableCount;
-    }
-
-    public void setAvailableCount(Long availableCount) {
-        this.availableCount = availableCount;
-    }
-
-    public List<Writer> getWriters() {
-        return writers;
-    }
-
-    public void setWriters(List<Writer> writers) {
-        this.writers = writers;
-    }
-
-    public Publisher getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(Publisher publisher) {
-        this.publisher = publisher;
-    }
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Represents a publisher -> Publishes some books
+ * <p>
  * keeps :
  *  - id (auto generated)
  *  - name
@@ -33,36 +34,4 @@ public class Publisher {
     private String foundYear; // publisher's year of foundation, not necessary
     @OneToMany
     List<Book> books; // a list of books published by this publisher, mapped to book entity
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getFoundYear() {
-        return foundYear;
-    }
-
-    public void setFoundYear(String foundYear) {
-        this.foundYear = foundYear;
-    }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
 }
