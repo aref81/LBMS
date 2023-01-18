@@ -59,8 +59,20 @@ import java.util.List;
     @Override
     public PublisherInterface savePublisher(PublisherInterface publisherInterface, String userName) {
         Admin admin = adminRepository.findByUserName(userName).orElseThrow(() -> new UsernameNotFoundException("username is not in the database"));
-        Publisher publisher = publisherToEntity(admin,publisherInterface);
-        return new PublisherInterface(publisherRepository.save(publisher));
+        Publisher initPublisher = publisherToEntity(admin,publisherInterface);
+        Publisher savedPublisher = publisherRepository.save(initPublisher);
+        admin.getPublishers().add(savedPublisher);
+        adminRepository.save(admin);
+        return new PublisherInterface(savedPublisher);
+    }
+
+    @Override
+    public Publisher savePublisher(Publisher publisher) {
+        Publisher savedPublisher = publisherRepository.save(publisher);
+        Admin admin = publisher.getAdmin();
+        admin.getPublishers().add(savedPublisher);
+        adminRepository.save(admin);
+        return savedPublisher;
     }
 
     @Override
@@ -71,8 +83,20 @@ import java.util.List;
     @Override
     public WriterInterface saveWriter(WriterInterface writerInterface, String userName) {
         Admin admin = adminRepository.findByUserName(userName).orElseThrow(() -> new UsernameNotFoundException("username is not in the database"));
-        Writer writer = writerToEntity(admin,writerInterface);
-        return new WriterInterface(writerRepository.save(writer));
+        Writer initWriter = writerToEntity(admin,writerInterface);
+        Writer savedWriter = writerRepository.save(initWriter);
+        admin.getWriters().add(savedWriter);
+        adminRepository.save(admin);
+        return new WriterInterface(savedWriter);
+    }
+
+    @Override
+    public Writer saveWriter(Writer writer) {
+        Writer savedWriter = writerRepository.save(writer);
+        Admin admin = writer.getAdmin();
+        admin.getWriters().add(savedWriter);
+        adminRepository.save(admin);
+        return savedWriter;
     }
 
     @Override
@@ -83,8 +107,41 @@ import java.util.List;
     @Override
     public BookInterface saveBook(BookInterface bookInterface, String userName) {
         Admin admin = adminRepository.findByUserName(userName).orElseThrow(() -> new UsernameNotFoundException("username is not in the database"));
-        Book book = bookToEntity(admin,bookInterface);
-        return new BookInterface(bookRepository.save(book));
+        Book initBook = bookToEntity(admin,bookInterface);
+        Book savedBook = bookRepository.save(initBook);
+        for (Writer w:
+             savedBook.getWriters()) {
+            w.getBooks().add(savedBook);
+            writerRepository.save(w);
+        }
+
+        savedBook.getPublisher().getBooks().add(savedBook);
+        publisherRepository.save(savedBook.getPublisher());
+
+        admin.getBooks().add(savedBook);
+        adminRepository.save(admin);
+
+        return new BookInterface(savedBook);
+    }
+
+    @Override
+    public Book saveBook(Book book) {
+        Book savedBook = bookRepository.save(book);
+        Admin admin = book.getAdmin();
+
+        for (Writer w:
+                savedBook.getWriters()) {
+            w.getBooks().add(savedBook);
+            writerRepository.save(w);
+        }
+
+        savedBook.getPublisher().getBooks().add(savedBook);
+        publisherRepository.save(savedBook.getPublisher());
+
+        admin.getBooks().add(savedBook);
+        adminRepository.save(admin);
+
+        return savedBook;
     }
 
     @Override
