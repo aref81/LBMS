@@ -14,14 +14,14 @@ import java.util.List;
 public final class WriterInterface {
     private Long id;
     private String firstName;
-    private String lastname;
+    private String lastName;
     private String birth;
     private List<String> books;
 
     public WriterInterface(Writer writer) {
         this.id = writer.getId();
         this.firstName = writer.getFirstName();
-        this.lastname = writer.getLastName();
+        this.lastName = writer.getLastName();
         this.birth = writer.getBirth();
         this.books = new ArrayList<>(writer.getBooks().size());
         for (Book b:
@@ -31,6 +31,6 @@ public final class WriterInterface {
     }
 
     public Writer toEntity (List<Book> books, Admin admin) {
-        return new Writer(this.id,this.firstName,this.lastname,this.birth,books,admin);
+        return new Writer(this.id,this.firstName,this.lastName,this.birth,books,admin);
     }
 }

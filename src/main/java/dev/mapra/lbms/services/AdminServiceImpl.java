@@ -156,6 +156,10 @@ import java.util.List;
     }
 
     private Book bookToEntity (Admin admin,BookInterface bookInterface) {
+        if (bookInterface.getWriters() == null) {
+            throw new RuntimeException("writer list is missing");
+        }
+
         List<Writer> writers = new ArrayList<>(bookInterface.getWriters().size());
 
         for (String w:
@@ -169,11 +173,13 @@ import java.util.List;
     }
 
     private Writer writerToEntity (Admin admin,WriterInterface writerInterface) {
-        List<Book> books = new ArrayList<>(writerInterface.getBooks().size());
+        List<Book> books = new ArrayList<>();
+        if (writerInterface.getBooks() != null) {
 
-        for (String b:
-                writerInterface.getBooks()) {
-            books.add(bookRepository.findByName(b).orElseThrow(() -> new RuntimeException("book not found")));
+            for (String b :
+                    writerInterface.getBooks()) {
+                books.add(bookRepository.findByName(b).orElseThrow(() -> new RuntimeException("book not found")));
+            }
         }
 
         return writerInterface.toEntity(books,admin);

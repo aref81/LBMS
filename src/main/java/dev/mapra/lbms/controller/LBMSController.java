@@ -35,7 +35,7 @@ public class LBMSController {
     @PostMapping("/publisher/save")
     public ResponseEntity<PublisherInterface> savePublisher(@RequestBody PublisherInterface publisherInterface, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String userName = getUserName(request,response).orElseThrow(() -> new RuntimeException("cannot find username"));
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/publishser/save").toUriString());
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/publisher/save").toUriString());
         return ResponseEntity.created(uri).body(adminService.savePublisher(publisherInterface, userName));
     }
 

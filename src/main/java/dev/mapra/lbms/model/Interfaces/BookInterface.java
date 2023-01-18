@@ -23,7 +23,7 @@ public final class BookInterface {
     public BookInterface(Book book) {
         this.id = book.getId();
         this.name = book.getName();
-        this.publisher = book.getPublishYear();
+        this.publishYear = book.getPublishYear();
         this.availableCount = book.getAvailableCount();
         this.writers = new ArrayList<>(book.getWriters().size());
         for (Writer w:
