@@ -15,6 +15,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Manages the security configuration of application :
+ * LBMS is a token based api server
+ * each user gets two tokens :
+ * - access token : to access various data based on his/her role (only role right now is "ADMIN")(10 min)
+ * - refresh token : to refresh access token (30 min)
+ *
+ * @author mohammadhoseinaref
+ * @version 1.0
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor

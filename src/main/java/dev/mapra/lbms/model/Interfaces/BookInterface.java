@@ -10,6 +10,19 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * implements the view of info that user has access to :
+ * - id
+ * - name
+ * - publish year
+ * - available items of book
+ * - list of writers last name
+ * - name of publisher
+ *
+ * @author mohammadhoseinaref
+ * @version 1.0
+ * @see Book
+ */
 @Data
 @AllArgsConstructor
 public final class BookInterface {

@@ -9,6 +9,18 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * implements the view of info that user has access to :
+ * - id
+ * - first name
+ * - last name
+ * - date of birth
+ * - list of books name
+ *
+ * @author mohammadhoseinaref
+ * @version 1.0
+ * @see Writer
+ */
 @Data
 @AllArgsConstructor
 public final class WriterInterface {

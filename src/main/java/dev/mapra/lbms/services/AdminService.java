@@ -10,6 +10,17 @@ import dev.mapra.lbms.model.Writer;
 
 import java.util.List;
 
+/**
+ * Main Program Service interface :
+ *  - add/remove admin
+ *  - add publisher
+ *  - add writer
+ *  - add book
+ *  - get a list of admin's book
+ *
+ * @author mohammadhoseinaref
+ * @version 1.0
+ */
 public interface AdminService {
 
     public Admin saveAdmin (Admin admin);

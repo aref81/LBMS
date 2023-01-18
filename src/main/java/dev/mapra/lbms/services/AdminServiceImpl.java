@@ -25,6 +25,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Main Program Services Implementation :
+ *  - add/remove admin
+ *  - add publisher
+ *  - add writer
+ *  - add book
+ *  - get a list of admin's book
+ *
+ * @author mohammadhoseinaref
+ * @version 1.0
+ *
+ */
 @Service
 @RequiredArgsConstructor
 @EnableScheduling

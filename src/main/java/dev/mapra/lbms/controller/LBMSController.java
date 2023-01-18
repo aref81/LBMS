@@ -26,6 +26,20 @@ import java.util.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+/**
+ * Main System API Controller
+ * runs at subAddress = "**\api"
+ * <p>
+ *  - save publisher (POST)
+ *  - save writer (POST)
+ *  - save book (POST)
+ *  - get book list (GET)
+ *  - get new access key from refresh key (GET)
+ * </>
+ *
+ * @author mohammadhoseinaref
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor

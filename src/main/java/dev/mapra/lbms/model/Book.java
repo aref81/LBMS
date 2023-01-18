@@ -23,9 +23,9 @@ import java.util.List;
  *      considering each book is published by only one
  *      publisher
  *  - admin who added the book
- *
+ * </>
  * @author mohammadhoseinaref
- * @version 0.1
+ * @version 1.0
  * @see Publisher
  * @see Writer
  */
@@ -39,7 +39,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id; // auto generated id
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name; // name of the book, necessary
     @Column(name = "publishYear")
     private String publishYear; // the year that book was published
