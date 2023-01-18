@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -28,18 +29,6 @@ public class LbmsApplication {
             adminService.saveAdmin(new Admin(null,"user1","1234",new ArrayList<>(),new ArrayList<>(),new ArrayList<>()));
             adminService.saveAdmin(new Admin(null,"user2","1234",new ArrayList<>(),new ArrayList<>(),new ArrayList<>()));
             adminService.saveAdmin(new Admin(null,"user3","1234",new ArrayList<>(),new ArrayList<>(),new ArrayList<>()));
-
-//            ArrayList<Publisher> publishers = new ArrayList<>();
-//            publishers.add(adminService.savePublisher(new Publisher(null,"publisher1","2017",new ArrayList<>(),adminService.getAdmin("user1"))));
-//            publishers.add(adminService.savePublisher(new Publisher(null,"publisher2","2017",new ArrayList<>(),adminService.getAdmin("user2"))));
-//            publishers.add(adminService.savePublisher(new Publisher(null,"publisher3","2017",new ArrayList<>(),adminService.getAdmin("user3"))));
-//
-//            ArrayList<Writer> writers = new ArrayList<>();
-//            writers.add(adminService.saveWriter(new Writer(null,"name1","family1", "1380/02/03",new ArrayList<>(),adminService.getAdmin("user1"))));
-//            writers.add(adminService.saveWriter(new Writer(null,"name2","family2", "1380/02/03",new ArrayList<>(),adminService.getAdmin("user1"))));
-//            writers.add(adminService.saveWriter(new Writer(null,"name3","family3", "1380/02/03",new ArrayList<>(),adminService.getAdmin("user1"))));
-//
-//            adminService.saveBook(new Book(null,"book","2018", 9L,writers,publishers.get(1),adminService.getAdmin("user1")));
         };
     }
 

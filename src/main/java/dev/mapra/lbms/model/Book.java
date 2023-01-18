@@ -31,7 +31,7 @@ import java.util.List;
  */
 @Data
 @Entity
-@Table(name = "Boooks")
+@Table(name = "Books")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Book {

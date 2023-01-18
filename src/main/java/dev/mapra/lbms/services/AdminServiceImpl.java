@@ -12,6 +12,8 @@ import dev.mapra.lbms.repository.BookRepository;
 import dev.mapra.lbms.repository.PublisherRepository;
 import dev.mapra.lbms.repository.WriterRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +27,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@EnableScheduling
  public class AdminServiceImpl implements AdminService, UserDetailsService {
     private final AdminRepository adminRepository;
     private final PublisherRepository publisherRepository;
@@ -148,6 +151,11 @@ import java.util.List;
     public List<Book> getBooksList(String userName) {
         Admin admin = adminRepository.findByUserName(userName).orElseThrow(() -> new RuntimeException("Admin Not Found"));
         return bookRepository.findAllByAdmin(admin);
+    }
+
+    @Scheduled(cron = "0 0 8 * * *")
+    public void resetAvailable() {
+        bookRepository.resetAvailableTo(10L);
     }
 
     private Publisher publisherToEntity (Admin admin,PublisherInterface publisherInterface) {
