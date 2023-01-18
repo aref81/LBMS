@@ -38,7 +38,7 @@ public class Writer {
     @Column(name = "lastName",nullable = false,unique = true)
     private String lastName; // writer's last name, necessary, part of "name" composite attribute
     @Column(name = "birth")
-    private LocalDateTime birth; // writer's date of birth, not necessary
+    private String birth; // writer's date of birth, not necessary
     @ManyToMany
     private List<Book> books; // list of books written by this writer, mapped to book entity
     @ManyToOne

@@ -7,10 +7,10 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.mapra.lbms.model.Admin;
 import dev.mapra.lbms.model.Book;
-import dev.mapra.lbms.model.Publisher;
-import dev.mapra.lbms.model.Writer;
+import dev.mapra.lbms.model.Interfaces.BookInterface;
+import dev.mapra.lbms.model.Interfaces.PublisherInterface;
+import dev.mapra.lbms.model.Interfaces.WriterInterface;
 import dev.mapra.lbms.services.AdminService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,54 +33,38 @@ public class LBMSController {
     private final AdminService adminService;
 
     @PostMapping("/publisher/save")
-    public ResponseEntity<Publisher> savePublisher(@RequestBody Publisher publisher) {
+    public ResponseEntity<PublisherInterface> savePublisher(@RequestBody PublisherInterface publisherInterface, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userName = getUserName(request,response).orElseThrow(() -> new RuntimeException("cannot find username"));
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/publishser/save").toUriString());
-        return ResponseEntity.created(uri).body(adminService.savePublisher(publisher));
+        return ResponseEntity.created(uri).body(adminService.savePublisher(publisherInterface, userName));
     }
 
     @PostMapping("/writer/save")
-    public ResponseEntity<Writer> saveWriter(@RequestBody Writer writer) {
+    public ResponseEntity<WriterInterface> saveWriter(@RequestBody WriterInterface writerInterface, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userName = getUserName(request,response).orElseThrow(() -> new RuntimeException("cannot find username"));
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/writer/save").toUriString());
-        return ResponseEntity.created(uri).body(adminService.saveWriter(writer));
+        return ResponseEntity.created(uri).body(adminService.saveWriter(writerInterface, userName));
     }
 
     @PostMapping("/book/save")
-    public ResponseEntity<Book> saveBook(@RequestBody Book book) {
+    public ResponseEntity<BookInterface> saveBook(@RequestBody BookInterface bookInterface, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userName = getUserName(request,response).orElseThrow(() -> new RuntimeException("cannot find username"));
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/book/save").toUriString());
-        return ResponseEntity.created(uri).body(adminService.saveBook(book));
+        return ResponseEntity.created(uri).body(adminService.saveBook(bookInterface, userName));
     }
 
     @GetMapping("/book")
-    public ResponseEntity<List<Book>> getBooks(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
+    public ResponseEntity<List<BookInterface>> getBooks(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userName = getUserName(request,response).orElseThrow(() -> new RuntimeException("cannot find username"));
+        List<Book> books = adminService.getBooksList(userName);
+        List<BookInterface> retBooks = new ArrayList<>(books.size());
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            try {
-                String refreshToken = authorizationHeader.substring("Bearer ".length());
-                Algorithm algorithm = Algorithm.HMAC256("mapra".getBytes());
-                JWTVerifier verifier = JWT.require(algorithm).build();
-                DecodedJWT decodedJWT = verifier.verify(refreshToken);
-
-                String userName = decodedJWT.getSubject();
-
-                List<Book> books = adminService.getBooksList(userName);
-
-                return ResponseEntity.ok().body(books);
-
-
-            } catch (Exception e) {
-                // handle the exception
-                response.setHeader("error", e.getMessage());
-                HashMap<String, String> errors = new HashMap<>();
-                errors.put("error message", e.getMessage());
-                response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), errors);
-            }
-        } else {
-            throw new RuntimeException("Access token is missing");
+        for (Book b:
+                books) {
+            retBooks.add(new BookInterface(b));
         }
 
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(retBooks);
     }
 
     @GetMapping("/refresh")
@@ -129,5 +113,34 @@ public class LBMSController {
         } else {
             throw new RuntimeException("Refresh token is missing");
         }
+    }
+
+    private Optional<String> getUserName(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        String authorizationHeader = request.getHeader(AUTHORIZATION);
+        Optional<String> returnValue;
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            try {
+                String refreshToken = authorizationHeader.substring("Bearer ".length());
+                Algorithm algorithm = Algorithm.HMAC256("mapra".getBytes());
+                JWTVerifier verifier = JWT.require(algorithm).build();
+                DecodedJWT decodedJWT = verifier.verify(refreshToken);
+
+                String userName = decodedJWT.getSubject();
+                returnValue = Optional.ofNullable(userName);
+
+
+            } catch (Exception e) {
+                // handle the exception
+                response.setHeader("error", e.getMessage());
+                HashMap<String, String> errors = new HashMap<>();
+                errors.put("error message", e.getMessage());
+                response.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), errors);
+                returnValue = Optional.empty();
+            }
+        } else {
+            throw new RuntimeException("cannot retrieve user name");
+        }
+        return returnValue;
     }
 }

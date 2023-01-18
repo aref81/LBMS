@@ -2,6 +2,9 @@ package dev.mapra.lbms.services;
 
 import dev.mapra.lbms.model.Admin;
 import dev.mapra.lbms.model.Book;
+import dev.mapra.lbms.model.Interfaces.BookInterface;
+import dev.mapra.lbms.model.Interfaces.PublisherInterface;
+import dev.mapra.lbms.model.Interfaces.WriterInterface;
 import dev.mapra.lbms.model.Publisher;
 import dev.mapra.lbms.model.Writer;
 import dev.mapra.lbms.repository.AdminRepository;
@@ -54,8 +57,10 @@ import java.util.List;
     }
 
     @Override
-    public Publisher savePublisher(Publisher publisher) {
-        return publisherRepository.save(publisher);
+    public PublisherInterface savePublisher(PublisherInterface publisherInterface, String userName) {
+        Admin admin = adminRepository.findByUserName(userName).orElseThrow(() -> new UsernameNotFoundException("username is not in the database"));
+        Publisher publisher = publisherToEntity(admin,publisherInterface);
+        return new PublisherInterface(publisherRepository.save(publisher));
     }
 
     @Override
@@ -64,8 +69,10 @@ import java.util.List;
     }
 
     @Override
-    public Writer saveWriter(Writer writer) {
-        return writerRepository.save(writer);
+    public WriterInterface saveWriter(WriterInterface writerInterface, String userName) {
+        Admin admin = adminRepository.findByUserName(userName).orElseThrow(() -> new UsernameNotFoundException("username is not in the database"));
+        Writer writer = writerToEntity(admin,writerInterface);
+        return new WriterInterface(writerRepository.save(writer));
     }
 
     @Override
@@ -74,13 +81,44 @@ import java.util.List;
     }
 
     @Override
-    public Book saveBook(Book book) {
-        return bookRepository.save(book);
+    public BookInterface saveBook(BookInterface bookInterface, String userName) {
+        Admin admin = adminRepository.findByUserName(userName).orElseThrow(() -> new UsernameNotFoundException("username is not in the database"));
+        Book book = bookToEntity(admin,bookInterface);
+        return new BookInterface(bookRepository.save(book));
     }
 
     @Override
     public List<Book> getBooksList(String userName) {
         Admin admin = adminRepository.findByUserName(userName).orElseThrow(() -> new RuntimeException("Admin Not Found"));
         return bookRepository.findAllByAdmin(admin);
+    }
+
+    private Publisher publisherToEntity (Admin admin,PublisherInterface publisherInterface) {
+        List<Book> books = bookRepository.findAllByAdmin(admin);
+        return publisherInterface.toEntity(books,admin);
+    }
+
+    private Book bookToEntity (Admin admin,BookInterface bookInterface) {
+        List<Writer> writers = new ArrayList<>(bookInterface.getWriters().size());
+
+        for (String w:
+             bookInterface.getWriters()) {
+            writers.add(writerRepository.findByLastName(w).orElseThrow(() -> new RuntimeException("writer not found")));
+        }
+
+        Publisher publisher = publisherRepository.findByName(bookInterface.getPublisher()).orElseThrow(() -> new RuntimeException("Publisher not found"));
+
+        return bookInterface.toEntity(writers,admin,publisher);
+    }
+
+    private Writer writerToEntity (Admin admin,WriterInterface writerInterface) {
+        List<Book> books = new ArrayList<>(writerInterface.getBooks().size());
+
+        for (String b:
+                writerInterface.getBooks()) {
+            books.add(bookRepository.findByName(b).orElseThrow(() -> new RuntimeException("book not found")));
+        }
+
+        return writerInterface.toEntity(books,admin);
     }
 }
