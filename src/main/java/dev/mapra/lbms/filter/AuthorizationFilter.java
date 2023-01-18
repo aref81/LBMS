@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,9 +43,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                      String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
 
                      Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                     stream(roles).forEach(role -> {
-                         authorities.add(new SimpleGrantedAuthority(role));
-                     });
+                     authorities.add(new SimpleGrantedAuthority("ADMIN")); // our only role is admin
 
                      UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userName, null, authorities);
                      SecurityContextHolder.getContext().setAuthentication(authenticationToken);

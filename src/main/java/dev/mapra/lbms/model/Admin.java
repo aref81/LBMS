@@ -1,6 +1,8 @@
 package dev.mapra.lbms.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Primary;
 
 import javax.persistence.*;
@@ -32,6 +34,8 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "Admins")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

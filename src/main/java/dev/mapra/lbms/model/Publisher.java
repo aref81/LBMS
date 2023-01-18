@@ -1,6 +1,8 @@
 package dev.mapra.lbms.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -24,12 +26,14 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "Publishers")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id; // auto generated id
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false , unique = true)
     private String name; // publisher's name, necessary
     @Column(name = "foundYear")
     private String foundYear; // publisher's year of foundation, not necessary

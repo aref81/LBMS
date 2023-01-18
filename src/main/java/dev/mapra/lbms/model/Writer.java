@@ -1,6 +1,8 @@
 package dev.mapra.lbms.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -24,6 +26,8 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "Writers")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Writer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +35,7 @@ public class Writer {
     private Long id; // auto generated id
     @Column(name = "firstName")
     private String firstName; // writer's first name, not necessary, part of "name" composite attribute
-    @Column(name = "lastName",nullable = false)
+    @Column(name = "lastName",nullable = false,unique = true)
     private String lastName; // writer's last name, necessary, part of "name" composite attribute
     @Column(name = "birth")
     private LocalDateTime birth; // writer's date of birth, not necessary

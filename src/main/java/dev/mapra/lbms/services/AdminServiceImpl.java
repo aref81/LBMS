@@ -14,8 +14,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,10 +23,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
  public class AdminServiceImpl implements AdminService, UserDetailsService {
-    private AdminRepository adminRepository;
+    private final AdminRepository adminRepository;
     private final PublisherRepository publisherRepository;
     private final WriterRepository writerRepository;
     private final BookRepository bookRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -41,6 +42,13 @@ import java.util.List;
     }
 
     @Override
+    public Admin saveAdmin(Admin admin) {
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        adminRepository.save(admin);
+        return admin;
+    }
+
+    @Override
     public Admin getAdmin(String userName) {
         return adminRepository.findByUserName(userName).orElseThrow(() -> new UsernameNotFoundException("username is not in the database"));
     }
@@ -51,8 +59,18 @@ import java.util.List;
     }
 
     @Override
+    public Publisher getPublisher(String name) {
+        return publisherRepository.findByName(name).orElseThrow(() -> new RuntimeException("publisher not found"));
+    }
+
+    @Override
     public Writer saveWriter(Writer writer) {
         return writerRepository.save(writer);
+    }
+
+    @Override
+    public Writer getWriter(String lastName) {
+        return writerRepository.findByLastName(lastName).orElseThrow(() -> new RuntimeException("writer not found"));
     }
 
     @Override
@@ -61,8 +79,8 @@ import java.util.List;
     }
 
     @Override
-    public List<Book> getBooksList() {
-//        Admin admin = adminRepository.findByUserName(userName).orElseThrow(() -> new RuntimeException("Admin Not Found"));
-        return null;
+    public List<Book> getBooksList(String userName) {
+        Admin admin = adminRepository.findByUserName(userName).orElseThrow(() -> new RuntimeException("Admin Not Found"));
+        return bookRepository.findAllByAdmin(admin);
     }
 }

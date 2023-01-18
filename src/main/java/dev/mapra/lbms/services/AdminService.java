@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface AdminService {
 
+    public Admin saveAdmin (Admin admin);
     public Admin getAdmin (String userName);
 
     public Publisher savePublisher (Publisher publisher);
-
+    public Publisher getPublisher (String name);
     public Writer saveWriter (Writer writer);
-
+    public Writer getWriter (String lastName);
     public Book saveBook (Book book);
-
-    List<Book> getBooksList();
+    List<Book> getBooksList(String username);
 }
